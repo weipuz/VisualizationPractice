@@ -28,7 +28,6 @@ if __name__ == '__main__':
     auth.set_access_token(access_token, access_token_secret)
     stream = Stream(auth, l)
 
-    #This line filter Twitter Streams to capture data by the keywords: 'python', 'javascript', 'ruby'
-    #stream.filter(track=['#android', '#iphone'])
-    stream.filter(track=['#vote5sos'])
+    #This line filter Twitter Streams to capture data by the keywords: '#vote5sos','#votealall','#vote1duk','#votedebbyryan'
+    stream.filter(track=['#vote5sos','#votealall','#vote1duk','#votedebbyryan'])
     
