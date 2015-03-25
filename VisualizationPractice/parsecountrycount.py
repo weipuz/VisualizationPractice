@@ -25,15 +25,16 @@ for tweet in tweets_data:
         place = tweet['place']
         if 'country_code' in place and place['country_code'] != None:
             key = mydict[place['country_code']]
+            print tweet
             for hashtag in Hashtags:
-                if hashtag in tweet:
+                if hashtag in str(tweet):
                     country[key][hashtag] += 1
 print country
 #with open('country_result.json','w') as out:
 #    json.dump(country,out)
 with open('country_test.csv','w') as outfile:
     out = csv.writer(outfile)
-    out.writerow(['Country Code']+Hashtags)
+    out.writerow(['Country Code']+country.values()[0].keys())
     rows = map(lambda (key, value):[key]+value.values() ,country.items())
     out.writerows(rows)
 
