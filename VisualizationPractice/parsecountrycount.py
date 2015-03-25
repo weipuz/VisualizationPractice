@@ -1,8 +1,8 @@
-import json
-import namedtuple
-
-tweets_data_path = 'tweet.log'
-
+import json,csv
+from collections import defaultdict
+    
+    
+tweets_data_path = 'tweet_vote5sos.log'
 tweets_data = []
 tweets_file = open(tweets_data_path, "r")
 for line in tweets_file:
@@ -12,14 +12,24 @@ for line in tweets_file:
     except:
         continue
 print len(tweets_data)
-class Counter(dict):
-    def __missing__(self,key):
-        return 0
-country = Counter()
 
+with open('CountryCodes.csv', mode='r') as infile:
+    reader = csv.reader(infile)
+    mydict = dict((rows[1],rows[2]) for rows in reader)
+
+
+country = defaultdict(int)
 for tweet in tweets_data:
-    if tweet['country_code'] != None:
-        country[tweet['country_code']]+=1
+    if 'place' in tweet and tweet['place'] != None:
+        place = tweet['place']
+        if 'country_code' in place and place['country_code'] != None:
+            key = mydict[place['country_code']]
+            country[key] += 1
+print country
+#with open('country_result.json','w') as out:
+#    json.dump(country,out)
+with open('country_result.csv','w') as outfile:
+    out = csv.writer(outfile)
+    out.writerow(('name','count'))
+    out.writerows(country.items())
 
-#tweets['country'] = map(lambda tweet: tweet['country_code'] if tweet['country_code'] != None else None, tweets_data)
-#tweets_by_country = tweets['country'].value_counts()
